@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm uninstall *)",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const p = require\\('./package.json'\\); console.log\\('expo-constants:', p.dependencies['expo-constants']\\)\")"
+    ]
+  }
+}

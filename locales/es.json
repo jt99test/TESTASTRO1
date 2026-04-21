@@ -1,0 +1,78 @@
+{
+  "common": {
+    "appName": "SARITA",
+    "language": "Idioma",
+    "editProfile": "Editar perfil",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "generateNewReading": "Generar nueva lectura",
+    "loading": "Cargando..."
+  },
+  "splash": {
+    "cta": "CREAR MI CARTA",
+    "resume": "VER MI ULTIMA LECTURA",
+    "monthlyReady": "Nueva lectura mensual lista",
+    "topLabel": "ASTROLOGIA INTUITIVA",
+    "subtitle": "carta natal, ascendente, lunaciones y transitos",
+    "tagline": "Una experiencia para leer tu carta natal, seguir la Luna nueva y la Luna llena, ver tus transitos actuales y bajar todo eso a una guia clara."
+  },
+  "tabs": {
+    "chart": "Tú",
+    "moment": "Este mes",
+    "beyond": "Profundo",
+    "profile": "Perfil"
+  },
+  "results": {
+    "loadingSaved": "Cargando tu ultima lectura...",
+    "noSaved": "Aun no hay una lectura guardada.",
+    "createChart": "Crear mi carta",
+    "headerFor": "Tu carta para {{date}} - {{time}} - {{place}}",
+    "unknownTime": "Hora no registrada",
+    "love": "Amor",
+    "finance": "Dinero",
+    "health": "Salud",
+    "monthInClear": "TU MES EN CLARO",
+    "youAre": "ASI ERES TU",
+    "generatingPortrait": "Generando tu retrato...",
+    "generatingMonth": "Generando tu lectura del mes...",
+    "generatingAreas": "Leyendo amor, dinero y salud...",
+    "areasTitle": "Tus tres focos ahora",
+    "profileChangedTitle": "Tus datos han cambiado",
+    "profileChangedMessage": "¿Quieres generar una nueva lectura?",
+    "profileSaved": "Tu perfil se guardó en este dispositivo.",
+    "booking": "RESERVAR CON SARITA"
+  },
+  "profile": {
+    "birthData": "Datos de nacimiento",
+    "bigThree": "Tu triada base",
+    "dominantElement": "Elemento dominante",
+    "dominantModality": "Modalidad dominante",
+    "birthDate": "Fecha",
+    "birthTime": "Hora",
+    "birthCity": "Ciudad",
+    "birthCountry": "Pais",
+    "name": "Nombre"
+  },
+  "form": {
+    "title": "Tu Carta",
+    "subtitle": "Completa tu informacion natal",
+    "name": "NOMBRE COMPLETO",
+    "birthDate": "FECHA DE NACIMIENTO",
+    "birthTime": "HORA DE NACIMIENTO",
+    "unknownTime": "No lo se",
+    "birthPlace": "LUGAR DE NACIMIENTO",
+    "submit": "REVELAR MI CARTA",
+    "back": "< Volver"
+  },
+  "loading": {
+    "eyebrow": "interpretando tu cielo",
+    "title": "Abriendo el cielo de {{name}}{{dots}}",
+    "fallbackTitle": "Calculando posiciones, simbolos y lectura{{dots}}",
+    "subtitle": "{{name}} · {{place}}",
+    "fallbackSubtitle": "Estamos preparando una vision mas clara de la carta de {{name}}.",
+    "opening": "abriendo tu lectura",
+    "networkTitle": "No pudimos conectar con tu oraculo.",
+    "networkText": "Revisa que el backend este activo y que el telefono comparta la misma red WiFi.",
+    "back": "VOLVER Y REINTENTAR"
+  }
+}

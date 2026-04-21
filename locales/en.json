@@ -1,0 +1,78 @@
+{
+  "common": {
+    "appName": "SARITA",
+    "language": "Language",
+    "editProfile": "Edit profile",
+    "save": "Save",
+    "cancel": "Cancel",
+    "generateNewReading": "Generate new reading",
+    "loading": "Loading..."
+  },
+  "splash": {
+    "cta": "CREATE MY CHART",
+    "resume": "OPEN MY LAST READING",
+    "monthlyReady": "New monthly reading ready",
+    "topLabel": "INTUITIVE ASTROLOGY",
+    "subtitle": "natal chart, rising sign, lunations and transits",
+    "tagline": "An experience to read your natal chart, follow the new and full moon, track your current transits, and turn all of it into a clear guide."
+  },
+  "tabs": {
+    "chart": "You",
+    "moment": "This month",
+    "beyond": "Deep",
+    "profile": "Profile"
+  },
+  "results": {
+    "loadingSaved": "Loading your latest reading...",
+    "noSaved": "There is no saved reading yet.",
+    "createChart": "Create my chart",
+    "headerFor": "Your chart for {{date}} - {{time}} - {{place}}",
+    "unknownTime": "Time not recorded",
+    "love": "Love",
+    "finance": "Money",
+    "health": "Health",
+    "monthInClear": "YOUR MONTH IN CLEAR",
+    "youAre": "THIS IS YOU",
+    "generatingPortrait": "Generating your portrait...",
+    "generatingMonth": "Generating your monthly reading...",
+    "generatingAreas": "Reading love, money and health...",
+    "areasTitle": "Your three focus points now",
+    "profileChangedTitle": "Your data changed",
+    "profileChangedMessage": "Do you want to generate a new reading?",
+    "profileSaved": "Your profile was saved on this device.",
+    "booking": "BOOK WITH SARITA"
+  },
+  "profile": {
+    "birthData": "Birth data",
+    "bigThree": "Your big three",
+    "dominantElement": "Dominant element",
+    "dominantModality": "Dominant modality",
+    "birthDate": "Date",
+    "birthTime": "Time",
+    "birthCity": "City",
+    "birthCountry": "Country",
+    "name": "Name"
+  },
+  "form": {
+    "title": "Your Chart",
+    "subtitle": "Fill in your birth information",
+    "name": "FULL NAME",
+    "birthDate": "DATE OF BIRTH",
+    "birthTime": "TIME OF BIRTH",
+    "unknownTime": "I don't know",
+    "birthPlace": "PLACE OF BIRTH",
+    "submit": "REVEAL MY CHART",
+    "back": "< Back"
+  },
+  "loading": {
+    "eyebrow": "reading your sky",
+    "title": "Opening {{name}}'s sky{{dots}}",
+    "fallbackTitle": "Calculating positions, symbols and reading{{dots}}",
+    "subtitle": "{{name}} · {{place}}",
+    "fallbackSubtitle": "We are preparing a clearer view of {{name}}'s chart.",
+    "opening": "opening your reading",
+    "networkTitle": "We couldn't connect to your oracle.",
+    "networkText": "Check that the backend is running and that your phone is on the same Wi-Fi network.",
+    "back": "GO BACK AND RETRY"
+  }
+}

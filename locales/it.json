@@ -1,0 +1,78 @@
+{
+  "common": {
+    "appName": "SARITA",
+    "language": "Lingua",
+    "editProfile": "Modifica profilo",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "generateNewReading": "Genera nuova lettura",
+    "loading": "Caricamento..."
+  },
+  "splash": {
+    "cta": "CREA LA MIA CARTA",
+    "resume": "APRI LA MIA ULTIMA LETTURA",
+    "monthlyReady": "Nuova lettura mensile pronta",
+    "topLabel": "ASTROLOGIA INTUITIVA",
+    "subtitle": "carta natale, ascendente, lunazioni e transiti",
+    "tagline": "Un'esperienza per leggere la tua carta natale, seguire la Luna nuova e la Luna piena, vedere i transiti attuali e trasformare tutto in una guida chiara."
+  },
+  "tabs": {
+    "chart": "Tu",
+    "moment": "Questo mese",
+    "beyond": "Profondo",
+    "profile": "Profilo"
+  },
+  "results": {
+    "loadingSaved": "Caricamento della tua ultima lettura...",
+    "noSaved": "Non c'è ancora una lettura salvata.",
+    "createChart": "Crea la mia carta",
+    "headerFor": "La tua carta per {{date}} - {{time}} - {{place}}",
+    "unknownTime": "Ora non registrata",
+    "love": "Amore",
+    "finance": "Denaro",
+    "health": "Salute",
+    "monthInClear": "IL TUO MESE IN CHIARO",
+    "youAre": "COSI SEI TU",
+    "generatingPortrait": "Sto generando il tuo ritratto...",
+    "generatingMonth": "Sto generando la tua lettura mensile...",
+    "generatingAreas": "Sto leggendo amore, denaro e salute...",
+    "areasTitle": "I tuoi tre focus adesso",
+    "profileChangedTitle": "I tuoi dati sono cambiati",
+    "profileChangedMessage": "Vuoi generare una nuova lettura?",
+    "profileSaved": "Il tuo profilo è stato salvato su questo dispositivo.",
+    "booking": "PRENOTA CON SARITA"
+  },
+  "profile": {
+    "birthData": "Dati di nascita",
+    "bigThree": "La tua triade base",
+    "dominantElement": "Elemento dominante",
+    "dominantModality": "Modalità dominante",
+    "birthDate": "Data",
+    "birthTime": "Ora",
+    "birthCity": "Città",
+    "birthCountry": "Paese",
+    "name": "Nome"
+  },
+  "form": {
+    "title": "La Tua Carta",
+    "subtitle": "Completa le tue informazioni natali",
+    "name": "NOME COMPLETO",
+    "birthDate": "DATA DI NASCITA",
+    "birthTime": "ORA DI NASCITA",
+    "unknownTime": "Non lo so",
+    "birthPlace": "LUOGO DI NASCITA",
+    "submit": "RIVELA LA MIA CARTA",
+    "back": "< Indietro"
+  },
+  "loading": {
+    "eyebrow": "interpretando il tuo cielo",
+    "title": "Sto aprendo il cielo di {{name}}{{dots}}",
+    "fallbackTitle": "Calcolo posizioni, simboli e lettura{{dots}}",
+    "subtitle": "{{name}} · {{place}}",
+    "fallbackSubtitle": "Stiamo preparando una visione più chiara della carta di {{name}}.",
+    "opening": "sto aprendo la tua lettura",
+    "networkTitle": "Non siamo riusciti a connetterci al tuo oracolo.",
+    "networkText": "Controlla che il backend sia attivo e che il telefono sia sulla stessa rete Wi-Fi.",
+    "back": "TORNA INDIETRO E RIPROVA"
+  }
+}
