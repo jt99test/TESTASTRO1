@@ -21,90 +21,6 @@ import SoundToggleButton from '../components/SoundToggleButton'
 import { clearSavedChartState, loadLanguage, loadProfile } from '../constants/appState'
 
 
-const ITEM_HEIGHT = 44
-const VISIBLE_ITEMS = 5
-const PICKER_HEIGHT = ITEM_HEIGHT * VISIBLE_ITEMS
-
-const MONTHS_ES = [
-  'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
-]
-const YEARS   = Array.from({ length: 86 }, (_, i) => String(1930 + i))
-const HOURS   = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'))
-const MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'))
-
-function getDaysInMonth(month: number, year: number) {
-  return new Date(year, month + 1, 0).getDate()
-}
-
-interface WheelPickerProps {
-  items: string[]
-  selectedIndex: number
-  onChange: (index: number) => void
-  flex?: number
-}
-
-function WheelPicker({ items, selectedIndex, onChange, flex = 1 }: WheelPickerProps) {
-  const scrollRef = useRef<ScrollView>(null)
-  const [scrollIdx, setScrollIdx] = useState(selectedIndex)
-  const isDragging = useRef(false)
-
-  useEffect(() => {
-    const t = setTimeout(() => {
-      scrollRef.current?.scrollTo({ y: selectedIndex * ITEM_HEIGHT, animated: false })
-    }, 80)
-    return () => clearTimeout(t)
-  }, [])
-
-  useEffect(() => {
-    if (!isDragging.current) {
-      scrollRef.current?.scrollTo({ y: selectedIndex * ITEM_HEIGHT, animated: true })
-      setScrollIdx(selectedIndex)
-    }
-  }, [selectedIndex])
-
-  return (
-    <View style={{ flex, height: PICKER_HEIGHT, overflow: 'hidden' }}>
-      <View style={styles.highlightBar} />
-      <ScrollView
-        ref={scrollRef}
-        snapToInterval={ITEM_HEIGHT}
-        decelerationRate="fast"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: ITEM_HEIGHT * 2 }}
-        onScrollBeginDrag={() => { isDragging.current = true }}
-        onScroll={e => {
-          const idx = Math.round(e.nativeEvent.contentOffset.y / ITEM_HEIGHT)
-          setScrollIdx(Math.max(0, Math.min(idx, items.length - 1)))
-        }}
-        scrollEventThrottle={16}
-        onMomentumScrollEnd={e => {
-          isDragging.current = false
-          const idx = Math.round(e.nativeEvent.contentOffset.y / ITEM_HEIGHT)
-          const clamped = Math.max(0, Math.min(idx, items.length - 1))
-          setScrollIdx(clamped)
-          onChange(clamped)
-        }}
-      >
-        {items.map((item, i) => {
-          const dist = Math.abs(scrollIdx - i)
-          return (
-            <View key={i} style={styles.wheelRow}>
-              <Text style={[
-                styles.wheelText,
-                dist === 0 && styles.wheelCenter,
-                dist === 1 && styles.wheelNear,
-                dist >= 2 && styles.wheelFar,
-              ]}>
-                {item}
-              </Text>
-            </View>
-          )
-        })}
-      </ScrollView>
-    </View>
-  )
-}
 
 interface Suggestion {
   label: string
@@ -141,26 +57,13 @@ export default function FormScreen() {
   const params = useLocalSearchParams<{ reset?: string }>()
 
   const [name, setName] = useState('')
-  const [dayIdx, setDayIdx] = useState(0)
-  const [monthIdx, setMonthIdx] = useState(0)
-  const [yearIdx, setYearIdx] = useState(70)
-  const [showDatePicker, setShowDatePicker] = useState(false)
-  const [hourIdx, setHourIdx] = useState(12)
-  const [minuteIdx, setMinuteIdx] = useState(0)
+  const [dateText, setDateText] = useState('')
+  const [timeText, setTimeText] = useState('')
   const [dontKnowTime, setDontKnowTime] = useState(false)
-  const [showTimePicker, setShowTimePicker] = useState(false)
   const [locationQuery, setLocationQuery] = useState('')
   const [locationData, setLocationData] = useState<{ label: string; lat: string; lon: string } | null>(null)
   const [suggestions, setSuggestions] = useState<Suggestion[]>([])
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const currentYear  = 1930 + yearIdx
-  const daysInMonth  = getDaysInMonth(monthIdx, currentYear)
-  const DAYS         = Array.from({ length: daysInMonth }, (_, i) => String(i + 1).padStart(2, '0'))
-
-  useEffect(() => {
-    if (dayIdx >= daysInMonth) setDayIdx(daysInMonth - 1)
-  }, [monthIdx, yearIdx])
 
   useEffect(() => {
     let alive = true
@@ -177,11 +80,14 @@ export default function FormScreen() {
         if (language) i18n.changeLanguage(language)
         if (!profile) return
         setName(profile.name ?? '')
-        setDayIdx(Math.max(0, Number(profile.day ?? '1') - 1))
-        setMonthIdx(Math.max(0, Number(profile.month ?? '0')))
-        setYearIdx(Math.max(0, YEARS.indexOf(String(profile.year ?? YEARS[0]))))
-        if (profile.hour) setHourIdx(Math.max(0, Number(profile.hour)))
-        if (profile.minute) setMinuteIdx(Math.max(0, Number(profile.minute)))
+        if (profile.day && profile.month && profile.year) {
+          const d = String(profile.day).padStart(2, '0')
+          const m = String(Number(profile.month) + 1).padStart(2, '0')
+          setDateText(`${d}/${m}/${profile.year}`)
+        }
+        if (profile.hour && profile.minute) {
+          setTimeText(`${String(profile.hour).padStart(2, '0')}:${String(profile.minute).padStart(2, '0')}`)
+        }
         setDontKnowTime(!profile.hour)
         setLocationQuery(profile.location ?? '')
         if (profile.location) {
@@ -198,7 +104,7 @@ export default function FormScreen() {
     }
   }, [i18n])
 
-  const isComplete = name.trim().length > 0 && locationData !== null
+  const isComplete = name.trim().length > 0 && locationData !== null && dateText.length >= 8
 
   // ── Animations ──────────────────────────────────────────────
   const slideX  = useRef(new Animated.Value(40)).current
@@ -265,21 +171,25 @@ export default function FormScreen() {
     setSuggestions([])
   }
 
-  const displayDate = `${String(dayIdx + 1).padStart(2, '0')} de ${MONTHS_ES[monthIdx]} de ${currentYear}`
-  const displayTime = `${String(hourIdx).padStart(2, '0')}:${String(minuteIdx).padStart(2, '0')}`
-
   const handleSubmit = () => {
     if (!isComplete || !locationData) return
+    const parts = dateText.split('/')
+    const day = parts[0] ?? '1'
+    const month = String(Number(parts[1] ?? '1') - 1)
+    const year = parts[2] ?? '2000'
+    const timeParts = timeText.split(':')
+    const hour = timeParts[0] ?? '12'
+    const minute = timeParts[1] ?? '00'
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
     router.push({
       pathname: '/loading',
       params: {
         name: name.trim(),
-        day: String(dayIdx + 1),
-        month: String(monthIdx),
-        year: String(currentYear),
-        hour: dontKnowTime ? '' : String(hourIdx),
-        minute: dontKnowTime ? '' : String(minuteIdx),
+        day,
+        month,
+        year,
+        hour: dontKnowTime ? '' : hour,
+        minute: dontKnowTime ? '' : minute,
         location: locationData.label,
         lat: locationData.lat,
         lon: locationData.lon,
@@ -330,61 +240,39 @@ export default function FormScreen() {
             {/* ── FECHA ── */}
             <Animated.View style={S(2)}>
               <Text style={styles.label}>📅  {t('form.birthDate')}</Text>
-              <TouchableOpacity
-                style={styles.card}
-                onPress={() => { setShowDatePicker(v => !v); setShowTimePicker(false) }}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.fieldValue}>{displayDate}</Text>
-                <Text style={styles.chevron}>{showDatePicker ? '▲' : '▼'}</Text>
-              </TouchableOpacity>
-              {showDatePicker && (
-                <View style={styles.pickerCard}>
-                  <View style={styles.pickerHeaderRow}>
-                    <Text style={[styles.colHeader, { flex: 1 }]}>Día</Text>
-                    <Text style={[styles.colHeader, { flex: 2 }]}>Mes</Text>
-                    <Text style={[styles.colHeader, { flex: 1.5 }]}>Año</Text>
-                  </View>
-                  <View style={styles.pickerColumns}>
-                    <WheelPicker items={DAYS} selectedIndex={dayIdx} onChange={setDayIdx} flex={1} />
-                    <WheelPicker items={MONTHS_ES} selectedIndex={monthIdx} onChange={setMonthIdx} flex={2} />
-                    <WheelPicker items={YEARS} selectedIndex={yearIdx} onChange={setYearIdx} flex={1.5} />
-                  </View>
-                </View>
-              )}
+              <View style={styles.card}>
+                <TextInput
+                  style={[styles.input, { flex: 1 }]}
+                  placeholder="DD/MM/YYYY"
+                  placeholderTextColor={colors.silver}
+                  value={dateText}
+                  onChangeText={setDateText}
+                  keyboardType="numeric"
+                  maxLength={10}
+                />
+              </View>
             </Animated.View>
 
             {/* ── HORA ── */}
             <Animated.View style={S(3)}>
               <View style={styles.labelRow}>
                 <Text style={styles.label}>🕐  {t('form.birthTime')}</Text>
-                <TouchableOpacity onPress={() => { setDontKnowTime(v => !v); setShowTimePicker(false) }}>
+                <TouchableOpacity onPress={() => setDontKnowTime(v => !v)}>
                   <Text style={[styles.toggleText, dontKnowTime && styles.toggleActive]}>{t('form.unknownTime')}</Text>
                 </TouchableOpacity>
               </View>
               {!dontKnowTime && (
-                <>
-                  <TouchableOpacity
-                    style={styles.card}
-                    onPress={() => { setShowTimePicker(v => !v); setShowDatePicker(false) }}
-                    activeOpacity={0.8}
-                  >
-                    <Text style={styles.fieldValue}>{displayTime}</Text>
-                    <Text style={styles.chevron}>{showTimePicker ? '▲' : '▼'}</Text>
-                  </TouchableOpacity>
-                  {showTimePicker && (
-                    <View style={styles.pickerCard}>
-                      <View style={styles.pickerHeaderRow}>
-                        <Text style={[styles.colHeader, { flex: 1 }]}>Hora</Text>
-                        <Text style={[styles.colHeader, { flex: 1 }]}>Min</Text>
-                      </View>
-                      <View style={styles.pickerColumns}>
-                        <WheelPicker items={HOURS} selectedIndex={hourIdx} onChange={setHourIdx} />
-                        <WheelPicker items={MINUTES} selectedIndex={minuteIdx} onChange={setMinuteIdx} />
-                      </View>
-                    </View>
-                  )}
-                </>
+                <View style={styles.card}>
+                  <TextInput
+                    style={[styles.input, { flex: 1 }]}
+                    placeholder="HH:MM"
+                    placeholderTextColor={colors.silver}
+                    value={timeText}
+                    onChangeText={setTimeText}
+                    keyboardType="numeric"
+                    maxLength={5}
+                  />
+                </View>
               )}
             </Animated.View>
 
@@ -516,17 +404,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: typography.body,
   },
-  fieldValue: {
-    flex: 1,
-    color: colors.white,
-    fontSize: 16,
-    fontFamily: typography.display,
-  },
-  chevron: {
-    color: colors.gold,
-    fontSize: 12,
-    opacity: 0.7,
-  },
   clearBtn: {
     paddingHorizontal: 8,
   },
@@ -549,55 +426,6 @@ const styles = StyleSheet.create({
     color: colors.gold,
     borderColor: colors.gold,
   },
-  pickerCard: {
-    backgroundColor: 'rgba(255,255,255,0.04)',
-    borderRadius: 18,
-    borderWidth: 0.5,
-    borderTopColor: 'rgba(255,255,255,0.15)',
-    borderLeftColor: 'rgba(255,255,255,0.04)',
-    borderRightColor: 'rgba(255,255,255,0.04)',
-    borderBottomColor: 'rgba(255,255,255,0.04)',
-    marginTop: 8,
-    overflow: 'hidden',
-    paddingHorizontal: 10,
-    paddingBottom: 10,
-  },
-  pickerHeaderRow: {
-    flexDirection: 'row',
-    paddingTop: 10,
-    paddingBottom: 4,
-    paddingHorizontal: 4,
-  },
-  colHeader: {
-    textAlign: 'center',
-    color: colors.gold,
-    fontSize: 10,
-    letterSpacing: 1.5,
-    opacity: 0.7,
-    fontFamily: typography.bodyMedium,
-  },
-  pickerColumns: {
-    flexDirection: 'row',
-  },
-  highlightBar: {
-    position: 'absolute',
-    top: ITEM_HEIGHT * 2,
-    left: 6,
-    right: 6,
-    height: ITEM_HEIGHT,
-    backgroundColor: colors.backgroundSoft,
-    borderRadius: 12,
-    zIndex: 0,
-  },
-  wheelRow: {
-    height: ITEM_HEIGHT,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  wheelText:   { color: colors.whiteMuted, fontSize: 15, fontFamily: typography.display },
-  wheelCenter: { color: colors.white, fontSize: 18, fontWeight: '600' },
-  wheelNear:   { color: colors.whiteSubtle, fontSize: 15, opacity: 0.55 },
-  wheelFar:    { color: colors.whiteSubtle, fontSize: 13, opacity: 0.22 },
   suggestionsWrap: {
     marginTop: 8,
     gap: 8,
