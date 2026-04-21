@@ -35,6 +35,14 @@ yarn-error.*
 backend/.env
 .env
 
+# installer files
+node-v20.20.2-x64.msi
+tools-node-v20.20.2-win-x64.zip
+tools-node-v20.20.2/
+
+# dependencies
+node_modules/
+
 # typescript
 *.tsbuildinfo
 
