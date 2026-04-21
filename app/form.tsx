@@ -153,6 +153,20 @@ export default function FormScreen() {
     }, 600)
   }, [])
 
+  const handleDateChange = (text: string) => {
+    const digits = text.replace(/\D/g, '').slice(0, 8)
+    let formatted = digits
+    if (digits.length > 4) formatted = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`
+    else if (digits.length > 2) formatted = `${digits.slice(0, 2)}/${digits.slice(2)}`
+    setDateText(formatted)
+  }
+
+  const handleTimeChange = (text: string) => {
+    const digits = text.replace(/\D/g, '').slice(0, 4)
+    const formatted = digits.length > 2 ? `${digits.slice(0, 2)}:${digits.slice(2)}` : digits
+    setTimeText(formatted)
+  }
+
   const handleLocationChange = (text: string) => {
     setLocationQuery(text)
     setLocationData(null)
@@ -246,7 +260,7 @@ export default function FormScreen() {
                   placeholder="DD/MM/YYYY"
                   placeholderTextColor={colors.silver}
                   value={dateText}
-                  onChangeText={setDateText}
+                  onChangeText={handleDateChange}
                   keyboardType="numeric"
                   maxLength={10}
                 />
@@ -268,7 +282,7 @@ export default function FormScreen() {
                     placeholder="HH:MM"
                     placeholderTextColor={colors.silver}
                     value={timeText}
-                    onChangeText={setTimeText}
+                    onChangeText={handleTimeChange}
                     keyboardType="numeric"
                     maxLength={5}
                   />
